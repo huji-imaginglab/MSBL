@@ -12,13 +12,13 @@ jump = 4;  % Ratio of image resize, used to speed the processing time
 load('leaf_image');
 leaf = double(l2);
 
-% Generate H matrix, using an acoustic PSF with full width at 70% of max of
-% 11 pixels. 
-H = createDicMat(116, 'psfSz', 11, 'type', 'Acoustic');
+% Generate H matrix, using a simulated acoustic PSF with FWHM of 12 pixels. 
+load('Acoustic_PSF');
+H = createDicMat(116, 'PSF', PSF, 'type', 'Acoustic');
 
 % Generate measurments
 Y = generate_measurements(leaf, H, L, 1, SNR, jump);
 % Generate dictionary to recover measurments
-H4 = createDicMat(116, 'psfSz', 11, 'type', 'Acoustic', 'jump', jump);
+H4 = createDicMat(116, 'PSF', PSF, 'jump', jump);
 
 [Xrec,g] = MSBL(H4, Y, 15, 200);
